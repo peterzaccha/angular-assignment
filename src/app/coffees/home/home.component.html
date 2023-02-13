@@ -1,0 +1,107 @@
+<style>
+  .container {
+    padding: 3rem;
+  }
+  .small-view {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+  .details {
+    display: flex;
+    justify-content: space-between;
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+  }
+</style>
+<div class="container">
+  <h1>Coffee List</h1>
+  <div *ngIf="!smallView" class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="blend_name">
+        <th mat-header-cell *matHeaderCellDef>Blend Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.blend_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="origin">
+        <th mat-header-cell *matHeaderCellDef>Origin</th>
+        <td mat-cell *matCellDef="let element">{{ element.origin }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="variety">
+        <th mat-header-cell *matHeaderCellDef>Variety</th>
+        <td mat-cell *matCellDef="let element">{{ element.variety }}</td>
+      </ng-container>
+      <ng-container matColumnDef="notes">
+        <th mat-header-cell *matHeaderCellDef>Notes</th>
+        <td mat-cell *matCellDef="let element">{{ element.notes }}</td>
+      </ng-container>
+      <ng-container matColumnDef="intensifier">
+        <th mat-header-cell *matHeaderCellDef>Intensifier</th>
+        <td mat-cell *matCellDef="let element">{{ element.intensifier }}</td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-button
+            mat-raised-button
+            color="primary"
+            [routerLink]="['/coffee', element.id]"
+          >
+            View
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[10]"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements"
+    >
+    </mat-paginator>
+  </div>
+
+  <div *ngIf="smallView" class="small-view">
+    <mat-accordion *ngFor="let coffee of coffees$ | async">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{ coffee.blend_name }} </mat-panel-title>
+          <mat-panel-description>
+            {{ coffee.variety }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="panel">
+          <div class="details">
+            <strong>Intensifier</strong>
+            <span> {{ coffee.intensifier }}</span>
+          </div>
+          <div class="details">
+            <strong>Origin</strong>
+            <span> {{ coffee.origin }}</span>
+          </div>
+          <button
+            [routerLink]="['/coffee', coffee.id]"
+            mat-button
+            mat-raised-button
+            color="primary"
+          >
+            View
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
