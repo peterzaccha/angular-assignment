@@ -1,7 +1,7 @@
 version: "3"
 services:
   angular:
-    image: coffee-assignment
+    image: peterzaccha/angular-assignment
     build: .
     ports:
         - "80:80"
